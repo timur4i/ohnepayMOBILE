@@ -1,0 +1,14 @@
+# Секретные файлы — НЕ публиковать
+ohnepay/configs/db.php
+ohnepay/configs/gemini.php
+ohnepay/api/helpers/mailer.php
+
+# Flutter — генерируемые файлы
+ohnepay_app/build/
+ohnepay_app/.dart_tool/
+ohnepay_app/.idea/
+ohnepay_app/.metadata
+ohnepay_app/flutter_01.log
+ohnepay_app/.flutter-plugins-dependencies
+ohnepay_app/android/local.properties
+ohnepay_app/android/.gradle/
