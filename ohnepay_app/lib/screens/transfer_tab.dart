@@ -67,7 +67,7 @@ class _TransferTabState extends State<TransferTab> {
                     Expanded(
                       child: Text(
                         'Перевод выполняется мгновенно на счёт другого пользователя ohnePay.',
-                        style: TextStyle(color: Colors.white70, fontSize: 13),
+                        style: TextStyle(color: kSub, fontSize: 13),
                       ),
                     ),
                   ],
@@ -76,7 +76,7 @@ class _TransferTabState extends State<TransferTab> {
               const SizedBox(height: 28),
               const Text('Номер счёта получателя',
                   style: TextStyle(
-                      color: Colors.white,
+                      color: kText,
                       fontWeight: FontWeight.w600,
                       fontSize: 14)),
               const SizedBox(height: 8),
@@ -84,7 +84,7 @@ class _TransferTabState extends State<TransferTab> {
                 controller: _accCtrl,
                 keyboardType: TextInputType.number,
                 inputFormatters: [FilteringTextInputFormatter.digitsOnly],
-                style: const TextStyle(color: Colors.white, fontSize: 18),
+                style: const TextStyle(color: kText, fontSize: 18),
                 decoration: const InputDecoration(
                   hintText: 'Например: 1001',
                   prefixIcon: Icon(Icons.account_circle_outlined, color: kSub),
@@ -98,7 +98,7 @@ class _TransferTabState extends State<TransferTab> {
               const SizedBox(height: 20),
               const Text('Сумма (сум)',
                   style: TextStyle(
-                      color: Colors.white,
+                      color: kText,
                       fontWeight: FontWeight.w600,
                       fontSize: 14)),
               const SizedBox(height: 8),
@@ -107,7 +107,7 @@ class _TransferTabState extends State<TransferTab> {
                 keyboardType:
                     const TextInputType.numberWithOptions(decimal: true),
                 style: const TextStyle(
-                    color: Colors.white,
+                    color: kText,
                     fontSize: 22,
                     fontWeight: FontWeight.bold),
                 decoration: const InputDecoration(
@@ -126,13 +126,13 @@ class _TransferTabState extends State<TransferTab> {
               const SizedBox(height: 20),
               const Text('Примечание (необязательно)',
                   style: TextStyle(
-                      color: Colors.white,
+                      color: kText,
                       fontWeight: FontWeight.w600,
                       fontSize: 14)),
               const SizedBox(height: 8),
               TextFormField(
                 controller: _noteCtrl,
-                style: const TextStyle(color: Colors.white),
+                style: const TextStyle(color: kText),
                 maxLength: 100,
                 decoration: const InputDecoration(
                   hintText: 'Например: за обед',

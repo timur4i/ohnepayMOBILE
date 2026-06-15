@@ -115,7 +115,7 @@ class _TxCard extends StatelessWidget {
               children: [
                 Text(tx['counterpart'] ?? '',
                     style: const TextStyle(
-                        color: Colors.white,
+                        color: kText,
                         fontSize: 14,
                         fontWeight: FontWeight.w500),
                     maxLines: 1,

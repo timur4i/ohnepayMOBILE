@@ -11,7 +11,8 @@ class ApiService {
 
   static Future<void> init() async {
     final prefs = await SharedPreferences.getInstance();
-    _token = prefs.getString('jwt_token');
+    _token  = prefs.getString('jwt_token');
+    _pinSet = prefs.containsKey('app_pin');
   }
 
   static Future<void> saveSession(String token, int accNo, String name) async {
@@ -25,7 +26,25 @@ class ApiService {
   static Future<void> clearSession() async {
     _token = null;
     final prefs = await SharedPreferences.getInstance();
+    final pin = prefs.getString('app_pin');
     await prefs.clear();
+    if (pin != null) {
+      await prefs.setString('app_pin', pin);
+    } else {
+      _pinSet = false;
+    }
+  }
+
+  // ── PIN (local storage) ──
+  static Future<void> savePin(String pin) async {
+    _pinSet = true;
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setString('app_pin', pin);
+  }
+
+  static Future<String?> getPin() async {
+    final prefs = await SharedPreferences.getInstance();
+    return prefs.getString('app_pin');
   }
 
   static Future<int> getSavedAccNo() async {
@@ -38,7 +57,9 @@ class ApiService {
     return prefs.getString('user_name') ?? '';
   }
 
+  static bool _pinSet = false;
   static bool get isLoggedIn => _token != null;
+  static bool get isPinSet   => _pinSet;
 
   static Map<String, String> get _headers => {
     'Content-Type': 'application/json',
@@ -46,13 +67,19 @@ class ApiService {
   };
 
   static Map<String, dynamic> _handle(http.Response res) {
-    final data = jsonDecode(utf8.decode(res.bodyBytes)) as Map<String, dynamic>;
-    if (res.statusCode == 401) {
-      clearSession();
-      onUnauthorized?.call();
-      return {'success': false, 'error': 'Сессия истекла. Войдите заново.', '__code': 401};
+    try {
+      final data = jsonDecode(utf8.decode(res.bodyBytes)) as Map<String, dynamic>;
+      if (res.statusCode == 401) {
+        clearSession();
+        onUnauthorized?.call();
+        return {'success': false, 'error': 'Сессия истекла. Войдите заново.', '__code': 401};
+      }
+      return data;
+    } catch (_) {
+      final raw = utf8.decode(res.bodyBytes);
+      final preview = raw.length > 200 ? raw.substring(0, 200) : raw;
+      return {'success': false, 'error': '[${res.statusCode}] $preview'};
     }
-    return data;
   }
 
   static Future<Map<String, dynamic>> _post(
@@ -64,7 +91,7 @@ class ApiService {
           .timeout(const Duration(seconds: 30));
       return _handle(res);
     } catch (e) {
-      return {'success': false, 'error': 'Нет соединения с сервером'};
+      return {'success': false, 'error': 'Сеть: $e'};
     }
   }
 
@@ -78,7 +105,7 @@ class ApiService {
           .timeout(const Duration(seconds: 30));
       return _handle(res);
     } catch (e) {
-      return {'success': false, 'error': 'Нет соединения с сервером'};
+      return {'success': false, 'error': 'Сеть: $e'};
     }
   }
 
@@ -98,6 +125,12 @@ class ApiService {
           String oldPass, String newPass) =>
       _post('/auth/change_password.php',
           {'old_password': oldPass, 'new_password': newPass});
+
+  static Future<Map<String, dynamic>> sendForgotPinOtp(String email) =>
+      _post('/auth/send_otp.php', {'email': email, 'check_registered': true});
+
+  static Future<Map<String, dynamic>> verifyOtp(String email, String otp) =>
+      _post('/auth/verify_otp.php', {'email': email, 'otp': otp});
 
   // ── User ──
   static Future<Map<String, dynamic>> getUserInfo() => _get('/user/info.php');

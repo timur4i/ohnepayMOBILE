@@ -61,7 +61,7 @@ class _HomeTabState extends State<HomeTab> {
         backgroundColor: kCard,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
         title: const Text('Удалить карту?',
-            style: TextStyle(color: Colors.white)),
+            style: TextStyle(color: kText)),
         content: const Text('Карта будет удалена из вашего аккаунта.',
             style: TextStyle(color: kSub)),
         actions: [
@@ -133,7 +133,7 @@ class _HomeTabState extends State<HomeTab> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       const Text('Добавить карту',
-                          style: TextStyle(color: Colors.white,
+                          style: TextStyle(color: kText,
                               fontSize: 17, fontWeight: FontWeight.bold)),
                       Text(bank['name'] as String,
                           style: const TextStyle(color: kSub, fontSize: 12)),
@@ -147,7 +147,7 @@ class _HomeTabState extends State<HomeTab> {
               TextField(
                 controller: numCtrl,
                 keyboardType: TextInputType.number,
-                style: const TextStyle(color: Colors.white, letterSpacing: 2),
+                style: const TextStyle(color: kText, letterSpacing: 2),
                 inputFormatters: [
                   FilteringTextInputFormatter.digitsOnly,
                   _CardNumberFormatter(),
@@ -177,7 +177,7 @@ class _HomeTabState extends State<HomeTab> {
               TextField(
                 controller: holderCtrl,
                 textCapitalization: TextCapitalization.characters,
-                style: const TextStyle(color: Colors.white),
+                style: const TextStyle(color: kText),
                 decoration: const InputDecoration(
                   labelText: 'Имя держателя (как на карте)',
                   prefixIcon: Icon(Icons.person_outlined, color: kSub),
@@ -192,7 +192,7 @@ class _HomeTabState extends State<HomeTab> {
                     child: TextField(
                       controller: expCtrl,
                       keyboardType: TextInputType.number,
-                      style: const TextStyle(color: Colors.white),
+                      style: const TextStyle(color: kText),
                       inputFormatters: [_ExpiryFormatter()],
                       decoration: const InputDecoration(
                         labelText: 'ММ/ГГ',
@@ -210,7 +210,7 @@ class _HomeTabState extends State<HomeTab> {
                         obscureText: obscureCvv,
                         maxLength: 3,
                         inputFormatters: [FilteringTextInputFormatter.digitsOnly],
-                        style: const TextStyle(color: Colors.white,
+                        style: const TextStyle(color: kText,
                             letterSpacing: 4),
                         decoration: InputDecoration(
                           labelText: 'CVV',
@@ -320,7 +320,7 @@ class _HomeTabState extends State<HomeTab> {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       const Text('Мои карты',
-                          style: TextStyle(color: Colors.white,
+                          style: TextStyle(color: kText,
                               fontSize: 18, fontWeight: FontWeight.w700)),
                       GestureDetector(
                         onTap: _showAddCard,
@@ -366,7 +366,7 @@ class _HomeTabState extends State<HomeTab> {
                                 color: kSub, size: 40),
                             SizedBox(height: 10),
                             Text('Добавьте свою карту',
-                                style: TextStyle(color: Colors.white,
+                                style: TextStyle(color: kText,
                                     fontWeight: FontWeight.w600,
                                     fontSize: 15)),
                             SizedBox(height: 4),
@@ -490,7 +490,7 @@ class _HomeTabState extends State<HomeTab> {
                   // Recent transactions
                   if (_recent.isNotEmpty) ...[
                     const Text('Последние операции',
-                        style: TextStyle(color: Colors.white,
+                        style: TextStyle(color: kText,
                             fontSize: 16, fontWeight: FontWeight.w600)),
                     const SizedBox(height: 12),
                     ..._recent.map((tx) => _TxTile(tx: tx, fmt: _fmt)),
@@ -583,7 +583,7 @@ class _TxTile extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(tx['counterpart'] ?? '',
-                    style: const TextStyle(color: Colors.white, fontSize: 14),
+                    style: const TextStyle(color: kText, fontSize: 14),
                     maxLines: 1, overflow: TextOverflow.ellipsis),
                 Text(dateStr,
                     style: const TextStyle(color: kSub, fontSize: 11)),

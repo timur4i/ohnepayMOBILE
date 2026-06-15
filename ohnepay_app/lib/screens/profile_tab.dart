@@ -80,13 +80,13 @@ class _ProfileTabState extends State<ProfileTab> {
             children: [
               const Text('Редактировать профиль',
                   style: TextStyle(
-                      color: Colors.white,
+                      color: kText,
                       fontSize: 18,
                       fontWeight: FontWeight.bold)),
               const SizedBox(height: 20),
               TextField(
                 controller: nameCtrl,
-                style: const TextStyle(color: Colors.white),
+                style: const TextStyle(color: kText),
                 decoration: const InputDecoration(
                   labelText: 'Полное имя',
                   prefixIcon: Icon(Icons.person_outlined, color: kSub),
@@ -95,7 +95,7 @@ class _ProfileTabState extends State<ProfileTab> {
               const SizedBox(height: 16),
               TextField(
                 controller: addressCtrl,
-                style: const TextStyle(color: Colors.white),
+                style: const TextStyle(color: kText),
                 decoration: const InputDecoration(
                   labelText: 'Адрес',
                   prefixIcon: Icon(Icons.home_outlined, color: kSub),
@@ -171,14 +171,14 @@ class _ProfileTabState extends State<ProfileTab> {
             children: [
               const Text('Сменить пароль',
                   style: TextStyle(
-                      color: Colors.white,
+                      color: kText,
                       fontSize: 18,
                       fontWeight: FontWeight.bold)),
               const SizedBox(height: 20),
               TextField(
                 controller: oldCtrl,
                 obscureText: obscure,
-                style: const TextStyle(color: Colors.white),
+                style: const TextStyle(color: kText),
                 decoration: InputDecoration(
                   labelText: 'Текущий пароль',
                   prefixIcon: const Icon(Icons.lock_outlined, color: kSub),
@@ -194,7 +194,7 @@ class _ProfileTabState extends State<ProfileTab> {
               TextField(
                 controller: newCtrl,
                 obscureText: obscure,
-                style: const TextStyle(color: Colors.white),
+                style: const TextStyle(color: kText),
                 decoration: const InputDecoration(
                   labelText: 'Новый пароль',
                   prefixIcon: Icon(Icons.lock_reset, color: kSub),
@@ -289,7 +289,7 @@ class _ProfileTabState extends State<ProfileTab> {
                   Center(
                     child: Text(_name,
                         style: const TextStyle(
-                            color: Colors.white,
+                            color: kText,
                             fontSize: 20,
                             fontWeight: FontWeight.w700)),
                   ),
@@ -414,7 +414,7 @@ class _InfoCard extends StatelessWidget {
                                   const TextStyle(color: kSub, fontSize: 11)),
                           Text(item.value,
                               style: const TextStyle(
-                                  color: Colors.white, fontSize: 14)),
+                                  color: kText, fontSize: 14)),
                         ],
                       ),
                     ],
@@ -460,7 +460,7 @@ class _ActionTile extends StatelessWidget {
             const SizedBox(width: 12),
             Expanded(
               child: Text(label,
-                  style: const TextStyle(color: Colors.white, fontSize: 15)),
+                  style: const TextStyle(color: kText, fontSize: 15)),
             ),
             const Icon(Icons.arrow_forward_ios, color: kSub, size: 14),
           ],

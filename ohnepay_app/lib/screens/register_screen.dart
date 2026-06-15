@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import '../config.dart';
 import '../services/api_service.dart';
-import 'main_screen.dart';
+import 'pin_setup_screen.dart';
 
 class RegisterScreen extends StatefulWidget {
   const RegisterScreen({super.key});
@@ -99,7 +99,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
         res['name'] as String,
       );
       nav.pushAndRemoveUntil(
-        MaterialPageRoute(builder: (_) => const MainScreen()),
+        MaterialPageRoute(builder: (_) => const PinSetupScreen()),
         (_) => false,
       );
     } else {
@@ -127,7 +127,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     style: TextStyle(
                         fontSize: 22,
                         fontWeight: FontWeight.w700,
-                        color: Colors.white)),
+                        color: kText)),
                 const SizedBox(height: 4),
                 const Text('Заполните данные для регистрации',
                     style: TextStyle(color: kSub)),
@@ -137,7 +137,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 TextFormField(
                   controller: _nameCtrl,
                   enabled: !_otpSent,
-                  style: const TextStyle(color: Colors.white),
+                  style: const TextStyle(color: kText),
                   decoration: const InputDecoration(
                     labelText: 'Полное имя *',
                     prefixIcon: Icon(Icons.person_outlined, color: kSub),
@@ -152,7 +152,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   controller: _emailCtrl,
                   enabled: !_otpSent,
                   keyboardType: TextInputType.emailAddress,
-                  style: const TextStyle(color: Colors.white),
+                  style: const TextStyle(color: kText),
                   decoration: const InputDecoration(
                     labelText: 'Email *',
                     prefixIcon: Icon(Icons.email_outlined, color: kSub),
@@ -168,7 +168,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   controller: _passCtrl,
                   enabled: !_otpSent,
                   obscureText: _obscure,
-                  style: const TextStyle(color: Colors.white),
+                  style: const TextStyle(color: kText),
                   decoration: InputDecoration(
                     labelText: 'Пароль *',
                     prefixIcon: const Icon(Icons.lock_outlined, color: kSub),
@@ -190,7 +190,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   controller: _confirmCtrl,
                   enabled: !_otpSent,
                   obscureText: _obscure,
-                  style: const TextStyle(color: Colors.white),
+                  style: const TextStyle(color: kText),
                   decoration: const InputDecoration(
                     labelText: 'Подтвердите пароль *',
                     prefixIcon: Icon(Icons.lock_outlined, color: kSub),
@@ -245,7 +245,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                           keyboardType: TextInputType.number,
                           maxLength: 6,
                           style: const TextStyle(
-                              color: Colors.white,
+                              color: kText,
                               fontSize: 22,
                               letterSpacing: 8,
                               fontWeight: FontWeight.bold),

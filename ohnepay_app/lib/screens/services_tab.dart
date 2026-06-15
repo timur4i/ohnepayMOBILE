@@ -99,13 +99,13 @@ class _ServicesTabState extends State<ServicesTab> {
                 const SizedBox(width: 12),
                 Text(svc['name'] as String,
                     style: const TextStyle(
-                        color: Colors.white, fontSize: 18,
+                        color: kText, fontSize: 18,
                         fontWeight: FontWeight.bold)),
               ]),
               const SizedBox(height: 20),
               TextField(
                 controller: provCtrl,
-                style: const TextStyle(color: Colors.white),
+                style: const TextStyle(color: kText),
                 decoration: const InputDecoration(
                   labelText: 'Поставщик / Оператор',
                   prefixIcon: Icon(Icons.business, color: kSub),
@@ -114,7 +114,7 @@ class _ServicesTabState extends State<ServicesTab> {
               const SizedBox(height: 14),
               TextField(
                 controller: idCtrl,
-                style: const TextStyle(color: Colors.white),
+                style: const TextStyle(color: kText),
                 decoration: const InputDecoration(
                   labelText: 'Номер счёта / ID',
                   prefixIcon: Icon(Icons.tag, color: kSub),
@@ -125,7 +125,7 @@ class _ServicesTabState extends State<ServicesTab> {
                 controller: sumCtrl,
                 keyboardType: const TextInputType.numberWithOptions(decimal: true),
                 style: const TextStyle(
-                    color: Colors.white, fontSize: 20,
+                    color: kText, fontSize: 20,
                     fontWeight: FontWeight.bold),
                 decoration: const InputDecoration(
                   labelText: 'Сумма',
@@ -210,7 +210,7 @@ class _ServicesTabState extends State<ServicesTab> {
                   const Expanded(
                     child: Text('Перевод',
                         style: TextStyle(
-                            color: Colors.white,
+                            color: kText,
                             fontWeight: FontWeight.w700,
                             fontSize: 15)),
                   ),
@@ -243,7 +243,7 @@ class _ServicesTabState extends State<ServicesTab> {
                       controller: _accCtrl,
                       keyboardType: TextInputType.number,
                       inputFormatters: [FilteringTextInputFormatter.digitsOnly],
-                      style: const TextStyle(color: Colors.white),
+                      style: const TextStyle(color: kText),
                       decoration: const InputDecoration(
                         labelText: 'Номер счёта получателя',
                         prefixIcon: Icon(Icons.account_circle_outlined,
@@ -263,7 +263,7 @@ class _ServicesTabState extends State<ServicesTab> {
                       keyboardType:
                           const TextInputType.numberWithOptions(decimal: true),
                       style: const TextStyle(
-                          color: Colors.white,
+                          color: kText,
                           fontSize: 20, fontWeight: FontWeight.bold),
                       decoration: const InputDecoration(
                         labelText: 'Сумма',
@@ -282,7 +282,7 @@ class _ServicesTabState extends State<ServicesTab> {
                     const SizedBox(height: 12),
                     TextFormField(
                       controller: _noteCtrl,
-                      style: const TextStyle(color: Colors.white),
+                      style: const TextStyle(color: kText),
                       maxLength: 100,
                       decoration: const InputDecoration(
                         labelText: 'Примечание (необязательно)',
@@ -308,7 +308,7 @@ class _ServicesTabState extends State<ServicesTab> {
             padding: const EdgeInsets.fromLTRB(16, 4, 16, 0),
             child: const Text('Оплата услуг',
                 style: TextStyle(
-                    color: Colors.white,
+                    color: kText,
                     fontSize: 15, fontWeight: FontWeight.w700)),
           ),
           const SizedBox(height: 10),
@@ -349,7 +349,7 @@ class _ServicesTabState extends State<ServicesTab> {
                       const SizedBox(height: 8),
                       Text(svc['name'] as String,
                           style: const TextStyle(
-                              color: Colors.white, fontSize: 11),
+                              color: kText, fontSize: 11),
                           textAlign: TextAlign.center,
                           maxLines: 2,
                           overflow: TextOverflow.ellipsis),

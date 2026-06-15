@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import '../config.dart';
 import '../services/api_service.dart';
-import 'main_screen.dart';
 import 'register_screen.dart';
+import 'pin_setup_screen.dart';
+import 'pin_enter_screen.dart';
+import 'forgot_pin_screen.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -32,8 +34,11 @@ class _LoginScreenState extends State<LoginScreen> {
         res['accNo'] as int,
         res['name'] as String,
       );
-      nav.pushReplacement(
-          MaterialPageRoute(builder: (_) => const MainScreen()));
+      nav.pushReplacement(MaterialPageRoute(
+        builder: (_) => ApiService.isPinSet
+            ? const PinEnterScreen()
+            : const PinSetupScreen(),
+      ));
     } else {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
@@ -78,7 +83,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       style: TextStyle(
                           fontSize: 28,
                           fontWeight: FontWeight.bold,
-                          color: Colors.white)),
+                          color: kText)),
                 ),
                 const Center(
                   child: Text('Цифровой банкинг',
@@ -89,7 +94,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     style: TextStyle(
                         fontSize: 22,
                         fontWeight: FontWeight.w700,
-                        color: Colors.white)),
+                        color: kText)),
                 const SizedBox(height: 4),
                 const Text('Войдите в свой аккаунт',
                     style: TextStyle(color: kSub)),
@@ -97,7 +102,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 TextFormField(
                   controller: _emailCtrl,
                   keyboardType: TextInputType.emailAddress,
-                  style: const TextStyle(color: Colors.white),
+                  style: const TextStyle(color: kText),
                   decoration: const InputDecoration(
                     labelText: 'Email',
                     prefixIcon: Icon(Icons.email_outlined, color: kSub),
@@ -109,7 +114,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 TextFormField(
                   controller: _passCtrl,
                   obscureText: _obscure,
-                  style: const TextStyle(color: Colors.white),
+                  style: const TextStyle(color: kText),
                   decoration: InputDecoration(
                     labelText: 'Пароль',
                     prefixIcon: const Icon(Icons.lock_outlined, color: kSub),
@@ -123,7 +128,18 @@ class _LoginScreenState extends State<LoginScreen> {
                   validator: (v) =>
                       (v == null || v.isEmpty) ? 'Введите пароль' : null,
                 ),
-                const SizedBox(height: 32),
+                const SizedBox(height: 8),
+                Align(
+                  alignment: Alignment.centerRight,
+                  child: TextButton(
+                    onPressed: () => Navigator.push(context,
+                        MaterialPageRoute(
+                            builder: (_) => const ForgotPinScreen())),
+                    child: const Text('Забыли пароль?',
+                        style: TextStyle(color: kSub, fontSize: 13)),
+                  ),
+                ),
+                const SizedBox(height: 16),
                 _loading
                     ? const Center(child: CircularProgressIndicator())
                     : ElevatedButton(

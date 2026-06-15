@@ -114,7 +114,7 @@ class _AiChatScreenState extends State<AiChatScreen> {
                   Expanded(
                     child: TextField(
                       controller: _ctrl,
-                      style: const TextStyle(color: Colors.white),
+                      style: const TextStyle(color: kText),
                       maxLines: null,
                       textInputAction: TextInputAction.send,
                       onSubmitted: (_) => _send(),
@@ -194,7 +194,7 @@ class _BubbleWidget extends StatelessWidget {
         child: Text(
           msg.text,
           style: TextStyle(
-            color: msg.isError ? kRed : Colors.white,
+            color: msg.isUser ? Colors.white : (msg.isError ? kRed : kText),
             fontSize: 14,
             height: 1.5,
           ),

@@ -3,7 +3,8 @@ import 'package:intl/date_symbol_data_local.dart';
 import 'config.dart';
 import 'services/api_service.dart';
 import 'screens/login_screen.dart';
-import 'screens/main_screen.dart';
+import 'screens/pin_setup_screen.dart';
+import 'screens/pin_enter_screen.dart';
 
 final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 
@@ -34,7 +35,7 @@ class OhnePayApp extends StatelessWidget {
       theme: ThemeData(
         useMaterial3: true,
         scaffoldBackgroundColor: kBg,
-        colorScheme: const ColorScheme.dark(
+        colorScheme: const ColorScheme.light(
           primary: kPrimary,
           secondary: kAccent,
           surface: kCard,
@@ -81,7 +82,7 @@ class OhnePayApp extends StatelessWidget {
         ),
         appBarTheme: const AppBarTheme(
           backgroundColor: kBg,
-          foregroundColor: Colors.white,
+          foregroundColor: kText,
           elevation: 0,
           centerTitle: true,
         ),
@@ -92,7 +93,11 @@ class OhnePayApp extends StatelessWidget {
           type: BottomNavigationBarType.fixed,
         ),
       ),
-      home: ApiService.isLoggedIn ? const MainScreen() : const LoginScreen(),
+      home: ApiService.isLoggedIn
+          ? (ApiService.isPinSet
+              ? const PinEnterScreen()
+              : const PinSetupScreen())
+          : const LoginScreen(),
     );
   }
 }

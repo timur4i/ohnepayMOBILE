@@ -1,5 +1,5 @@
 <?php
-ob_start();
+ob_start(); // захватываем любой мусорный вывод
 
 header('Content-Type: application/json; charset=utf-8');
 header('Access-Control-Allow-Origin: *');
@@ -10,40 +10,38 @@ if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
     ob_end_clean(); http_response_code(200); exit;
 }
 
-function otp_fail($msg, $code = 400) {
+function fp_fail($msg, $code = 400) {
     ob_end_clean();
     http_response_code($code);
     echo json_encode(['success' => false, 'error' => $msg], JSON_UNESCAPED_UNICODE);
     exit;
 }
-function otp_ok($data) {
+function fp_ok($data) {
     ob_end_clean();
     http_response_code(200);
     echo json_encode(array_merge(['success' => true], $data), JSON_UNESCAPED_UNICODE);
     exit;
 }
 
-if ($_SERVER['REQUEST_METHOD'] !== 'POST') otp_fail('Method not allowed', 405);
+if ($_SERVER['REQUEST_METHOD'] !== 'POST') fp_fail('Method not allowed', 405);
 
 require_once(__DIR__ . '/../../configs/db.php');
 
 $body  = json_decode(file_get_contents('php://input'), true) ?? [];
 $email = trim($body['email'] ?? '');
 
-if (!filter_var($email, FILTER_VALIDATE_EMAIL)) otp_fail('Некорректный email');
+if (!filter_var($email, FILTER_VALIDATE_EMAIL)) fp_fail('Некорректный email');
 
-// Если check_registered=true — email должен быть зарегистрирован
-if (!empty($body['check_registered'])) {
-    $chk = mysqli_prepare($conn, "SELECT id FROM users WHERE Email = ?");
-    mysqli_stmt_bind_param($chk, 's', $email);
-    mysqli_stmt_execute($chk);
-    mysqli_stmt_store_result($chk);
-    $found = mysqli_stmt_num_rows($chk) > 0;
-    mysqli_stmt_close($chk);
-    if (!$found) otp_fail('Сначала зарегистрируйтесь');
-}
+// Проверяем, зарегистрирован ли email
+$chk = mysqli_prepare($conn, "SELECT id FROM users WHERE Email = ?");
+mysqli_stmt_bind_param($chk, 's', $email);
+mysqli_stmt_execute($chk);
+mysqli_stmt_store_result($chk);
+$exists = mysqli_stmt_num_rows($chk) > 0;
+mysqli_stmt_close($chk);
+if (!$exists) fp_fail('Сначала зарегистрируйтесь');
 
-// Rate limit: не чаще 1 раза в 60 секунд
+// Rate limit 60 сек
 $rl = mysqli_prepare($conn,
     "SELECT created_at FROM otp_codes WHERE email = ? ORDER BY created_at DESC LIMIT 1");
 mysqli_stmt_bind_param($rl, 's', $email);
@@ -53,7 +51,7 @@ mysqli_stmt_bind_result($rl, $rl_ts);
 mysqli_stmt_fetch($rl);
 mysqli_stmt_close($rl);
 if ($rl_ts && (time() - strtotime($rl_ts)) < 60) {
-    otp_fail('Подождите 60 секунд перед повторной отправкой');
+    fp_fail('Подождите 60 секунд перед повторной отправкой');
 }
 
 // Удаляем старые коды
@@ -62,7 +60,7 @@ mysqli_stmt_bind_param($del, 's', $email);
 mysqli_stmt_execute($del);
 mysqli_stmt_close($del);
 
-// Генерируем 6-значный код
+// Генерируем код
 $code = str_pad(random_int(0, 999999), 6, '0', STR_PAD_LEFT);
 $exp  = date('Y-m-d H:i:s', time() + 600);
 
@@ -72,21 +70,23 @@ mysqli_stmt_bind_param($ins, 'sss', $email, $code, $exp);
 mysqli_stmt_execute($ins);
 mysqli_stmt_close($ins);
 
-// Подключаем mailer после всех DB-операций
+// Подключаем mailer ПОСЛЕ всех DB-операций
 require_once(__DIR__ . '/../helpers/mailer.php');
 
 $html = "
-<div style='font-family:Arial,sans-serif;max-width:480px;margin:0 auto;background:#0A0F1E;color:#fff;padding:32px;border-radius:12px'>
+<div style='font-family:Arial,sans-serif;max-width:480px;margin:0 auto;
+     background:#0A0F1E;color:#fff;padding:32px;border-radius:12px'>
   <h2 style='color:#4169E1;margin-bottom:8px'>ohnePay</h2>
-  <p style='color:#8B9AAF;margin-bottom:24px'>Код подтверждения</p>
+  <p style='color:#8B9AAF;margin-bottom:24px'>Сброс PIN-кода</p>
   <div style='background:#141E33;border-radius:10px;padding:24px;text-align:center'>
     <span style='font-size:36px;font-weight:bold;letter-spacing:8px;color:#00D4AA'>$code</span>
   </div>
-  <p style='color:#8B9AAF;margin-top:20px;font-size:13px'>Код действителен 10 минут. Не передавайте его никому.</p>
-</div>
-";
+  <p style='color:#8B9AAF;margin-top:20px;font-size:13px'>
+    Код действителен 10 минут. Не передавайте его никому.
+  </p>
+</div>";
 
-$sent = sendMail($email, 'Код подтверждения ohnePay', $html);
-if (!$sent) otp_fail('Не удалось отправить письмо. Проверьте email.');
+$sent = sendMail($email, 'Сброс PIN-кода ohnePay', $html);
+if (!$sent) fp_fail('Не удалось отправить письмо. Проверьте email.');
 
-otp_ok(['message' => 'Код отправлен на ' . $email]);
+fp_ok(['message' => 'Код отправлен на ' . $email]);
